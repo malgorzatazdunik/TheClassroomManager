@@ -1,8 +1,10 @@
 import sqlite3
 import time
 from datetime import date
+from flask import Flask
 
 from classes import students
+
 
 def get_db(db_name):
     conn = sqlite3.connect(db_name)
@@ -28,9 +30,10 @@ def main():
     cursor.execute(sql2)
     conn.commit()
 
+
     while True:
         c = menu()
-        if c=="5":
+        if c=="9":
             print ("Goodbye")
             conn.commit()
             conn.close()
@@ -39,9 +42,11 @@ def main():
         conn.commit()
 
 def get_choice():
+    # TO DO: get input from buttons, check if it's valid, return that input
+
     while True:
-        c = input("Choice [1-5]: ")
-        if not c or c[0] not in "12345":
+        c = input("Choice [1-9]: ")
+        if not c or c[0] not in "123456789":
             print ("{} is not valid.".format(c))
         else:
             return c[0]
@@ -56,14 +61,29 @@ def do_option(c, cursor):
         students.print_students(cursor)
     elif c=="4":
         students.print_student(cursor)
+    elif c=='5':
+        students.add_grade(cursor)
+    elif c=='6':
+        students.delete_grade(cursor)
+    elif c=='7':
+        students.print_report_card(cursor)
+    elif c=='8':
+        students.print_all_grades(cursor)
 
 def menu():
+    # TO DO: Show options on screen
+
     print("Options:")
-    print("1.Add student\n\
+    print("\n\
+    1. Add student\n\
     2. Delete a student\n\
     3. Print all students\n\
     4. Print one student\n\
-    5. Quit")
+    5. Add a grade\n\
+    6. Delete a grade\n\
+    7. Print report card\n\
+    8. Print all grades \n\
+    9. Quit")
     c = get_choice()
     return c
 
